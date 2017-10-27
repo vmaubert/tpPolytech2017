@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 
@@ -6,33 +6,20 @@ import { HttpClient } from '@angular/common/http';
   selector: 'page-list',
   templateUrl: 'list.html'
 })
-export class ListPage {
-  selectedItem: any;
-  icons: string[];
-  items: Array<{title: string, note: string, icon: string}>;
+export class ListPage implements OnInit{
+
+  httpResponse: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient) {
-    // If we navigated to this page, we will have an item available as a nav param
-    this.selectedItem = navParams.get('item');
-
-    // Let's populate this page with some filler content for funzies
-    this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
-    'american-football', 'boat', 'bluetooth', 'build'];
-
-    this.items = [];
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
-    }
   }
 
-  itemTapped(event, item) {
-    // That's right, we're pushing to ourselves!
-    this.navCtrl.push(ListPage, {
-      item: item
-    });
+  ngOnInit(): void {
+    //https://developers.themoviedb.org/3/movies/get-popular-movies
+    this.http.get('https://api.themoviedb.org/3/movie/popular?api_key=7ad22c0094c9b92652d64ea897f03a7b&language=en-US&page=1')
+      .subscribe(response => this.httpResponse = response);
+  }
+
+  goToMovie(movieId){
+    console.log(movieId);
   }
 }

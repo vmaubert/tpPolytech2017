@@ -8,16 +8,15 @@
 </ion-header>
 
 <ion-content>
+  <!--https://ionicframework.com/docs/components/#thumbnail-list-->
   <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
-      <ion-icon [name]="item.icon" item-start></ion-icon>
-      {{item.title}}
-      <div class="item-note" item-end>
-        {{item.note}}
-      </div>
-    </button>
+    <ion-item *ngFor="let movie of httpResponse?.results">
+      <ion-thumbnail item-start>
+        <img [src]="'http://image.tmdb.org/t/p/w92' + movie.poster_path">
+      </ion-thumbnail>
+      <h2>{{movie.title}}</h2>
+      <p>{{movie.release_date}}</p>
+      <button ion-button clear item-end (click)="goToMovie(movie.id)">View</button>
+    </ion-item>
   </ion-list>
-  <div *ngIf="selectedItem" padding>
-    You navigated here from <b>{{selectedItem.title}}</b>
-  </div>
 </ion-content>
